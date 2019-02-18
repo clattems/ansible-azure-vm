@@ -1,2 +1,31 @@
 ---
-# tasks file for ansible-azure-vm
+- name: create bastion
+  azure_rm_virtualmachine:
+    ad_user: "{{ ad_user }}"
+    password: "{{ password }}"
+    resource_group: "{{ resource_group }}"
+    name: "{{ item.0 }}"
+    vm_size: "{{ vm_size }}"
+    admin_username: cloud-user
+    ssh_password_enabled: false
+    ssh_public_keys:
+    - path: /home/cloud-user/.ssh/authorized_keys
+      key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKYkuPQG3dEyWjeS0F924/dj6nMG/05qm8zZITYZoX2vNBQ0PVW9DaBinv76sSr3husWOAGgDkQ59n70GRV4jehg1TiSeR4Ss+sCvpGm+vYS2q7E0x8iGk3FPvg94U9GxA3sTgnYEdWd7t8MqlOa4BFSOMH7VXT/8MNMpgIbir+dwMZTa8oauY4qWYjAhL+9b9PnG2QexMcsTdzPLDUrKDPjuFMQAc2LHVVeF1Uk2ryt7t4TQ1D/D038ra9JZzkGWtPaNkpSfE888GCf4M5CcKUSPHZHRnJ85v2t7KDjxTZL3sbm9xNRXe+/TlRijAbTH/qspERC3c/14utLyk6s+l cloud-user@linuxbastion"
+    virtual_network_name: "{{ VNET }}"
+    network_interface_names: "{{ item.1 }}"
+    #public_ip_allocation_method: Disabled
+    subnet_name: SN-SSBastion
+    storage_account_name: "{{ storage_account_name }}"
+    managed_disk_type: Premium_LRS
+    os_disk_size_gb: 32
+    image:
+      offer: RHEL
+      publisher: RedHat
+      sku: 7-RAW
+      version: latest
+    tags:
+      service: ansible
+      purpose: automation
+  with_together:
+    - "{{ vmname }}"
+    - "{{ nicname }}"
