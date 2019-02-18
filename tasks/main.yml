@@ -1,5 +1,5 @@
 ---
-- name: create bastion
+- name: Add or Delete Virtual Machine
   azure_rm_virtualmachine:
     state: "{{ state }}"
     resource_group: "{{ resource_group }}"
