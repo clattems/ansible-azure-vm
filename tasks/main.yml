@@ -1,6 +1,7 @@
 ---
 - name: create bastion
   azure_rm_virtualmachine:
+    state: "{{ state }}"
     resource_group: "{{ resource_group }}"
     name: "{{ item.0 }}"
     vm_size: "{{ vm_size }}"
