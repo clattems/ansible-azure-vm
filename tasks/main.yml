@@ -1,8 +1,6 @@
 ---
 - name: create bastion
   azure_rm_virtualmachine:
-    ad_user: "{{ ad_user }}"
-    password: "{{ password }}"
     resource_group: "{{ resource_group }}"
     name: "{{ item.0 }}"
     vm_size: "{{ vm_size }}"
